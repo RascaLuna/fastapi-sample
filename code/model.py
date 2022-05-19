@@ -31,6 +31,21 @@ class User(BaseModel):
     created_at: datetime
     updated_at: datetime
 
+class PointTable(Base):
+    __tablename__ = 'points'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, autoincrement=True)
+    total_point = Column(Integer)
+    created_at = Column(TIMESTAMP, nullable=False)
+    updated_at = Column(TIMESTAMP, nullable=False)
+
+
+# POSTやPUTのとき受け取るRequest Bodyのモデルを定義
+class Point(BaseModel):
+    id: int
+    user_id: int
+    created_at: datetime
+    updated_at: datetime
 
 def main():
     # テーブルが存在しなければ、テーブルを作成
