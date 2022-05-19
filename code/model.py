@@ -26,8 +26,8 @@ class User(BaseModel):
     name: str
     sex: str
     email: str
-    birthday: date
     prefecture: str
+    birthday: date
     created_at: datetime
     updated_at: datetime
 
