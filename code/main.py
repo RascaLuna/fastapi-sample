@@ -25,21 +25,21 @@ app.add_middleware(
 
 # ----------APIの実装------------
 # テーブルにいる全ユーザ情報を取得 GET
-@app.get("/points")
+@app.get("/users")
 def read_users(response: Response):
-    points = session.query(PointTable).all()
+    users = session.query(UserTable).all()
     
 
     response.headers['X-Total-Count'] = '30' 
     response.headers['Access-Control-Expose-Headers'] = 'Content-Range'
-    return points
+    return users
 
 # idにマッチするユーザ情報を取得 GET
-@app.get("/points/{id}")
-def read_point(id: int):
-    point = session.query(PointTable).\
-        filter(PointTable.id == id).first()
-    return point
+@app.get("/users/{id}")
+def read_user(id: int):
+    user = session.query(UserTable).\
+        filter(UserTable.id == id).first()
+    return user
 
 # ユーザ情報を登録 POST
 @app.post("/user")
@@ -76,26 +76,26 @@ async def update_users(users: List[User]):
         user.updated_at = new_user.updated_at
         session.commit()
 
-# テーブルにいる全ユーザのポイント情報を取得 GET
+# テーブルにいる全ユーザ情報を取得 GET
 @app.get("/users")
 def read_users(response: Response):
     users = session.query(UserTable).all()
     
-
     response.headers['X-Total-Count'] = '30' 
     response.headers['Access-Control-Expose-Headers'] = 'Content-Range'
     return users
 
-# idにマッチするポイント情報を取得 GET
+# idにマッチするユーザ情報を取得 GET
 @app.get("/users/{id}")
 def read_user(id: int):
     user = session.query(UserTable).\
         filter(UserTable.id == id).first()
     return user
 
-# ポイント情報を登録 POST
+# ユーザ情報を登録 POST
 @app.post("/user")
 # クエリで各パラメータを受け取る
+# /user?id=11&name=Saeki&sex=female&email=saeki%40test.com&prefecture=Gunma&birthday=1990-11-20&created_at=2022-05-10T04%3A26%3A22&updated_at=2022-05-10T04%3A26%3A22'
 async def create_user(id: int, name: str, sex: str, email: str, prefecture: str, birthday: date, created_at: datetime, updated_at: datetime):
     user = UserTable()
     user.id = id
@@ -110,7 +110,7 @@ async def create_user(id: int, name: str, sex: str, email: str, prefecture: str,
     session.add(user)
     session.commit()
 
-# 複数のポイント情報を更新 PUT
+# 複数のユーザ情報を更新 PUT
 @app.put("/users")
 # modelで定義したUserモデルのリクエストbodyをリストに入れた形で受け取る
 # users=[{"id": 1, "name": "一郎", "age": 16},{"id": 2, "name": "二郎", "age": 20}]
@@ -126,3 +126,19 @@ async def update_users(users: List[User]):
         user.created_at = new_user.created_at
         user.updated_at = new_user.updated_at
         session.commit()
+
+# テーブルにいる全ユーザ情報を取得 GET
+@app.get("/points")
+def read_points(response: Response):
+    points = session.query(PointTable).all()
+    
+    response.headers['X-Total-Count'] = '30' 
+    response.headers['Access-Control-Expose-Headers'] = 'Content-Range'
+    return points
+
+# idにマッチするユーザ情報を取得 GET
+@app.get("/points/{id}")
+def read_point(id: int):
+    point = session.query(PointTable).\
+        filter(PointTable.id == id).first()
+    return point
